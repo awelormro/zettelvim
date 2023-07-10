@@ -1,5 +1,5 @@
 
-command -nargs=+ ZettelCreateFile call ZettelWithName(<q-args>)
+command -nargs=+ ZettelCreateFile1 call ZettelWithName(<q-args>)
 
 function! ZettelWithName(args)
   let argums = split(a:args, ' ')

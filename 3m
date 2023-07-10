@@ -1,29 +1,28 @@
 
-                           ______   __                             __               
-                          /      \ |  \                           |  \              
-                         |  $$$$$$\| $$____   __    __  __     __  \$$ ______ ____  
-                         | $$__| $$| $$    \ |  \  |  \|  \   /  \|  \|      \    \ 
-                         | $$    $$| $$$$$$$\| $$  | $$ \$$\ /  $$| $$| $$$$$$\$$$$\
-                         | $$$$$$$$| $$  | $$| $$  | $$  \$$\  $$ | $$| $$ | $$ | $$
-                         | $$  | $$| $$__/ $$| $$__/ $$   \$$ $$  | $$| $$ | $$ | $$
-                         | $$  | $$| $$    $$ \$$    $$    \$$$   | $$| $$ | $$ | $$
-                          \$$   \$$ \$$$$$$$   \$$$$$$      \$     \$$ \$$  \$$  \$$
-                        ╭──────────────────────────────────────────────────────╮
-                        │ The essence of XML is this: the problem it solves    │
-                        │ is not hard, and it does not solve the problem well. │
-                        │                                                      │
-                        │ - Phil Wadler                                        │
-                        ╰──────────────────────────────────────────────────────╯
+function! ZettelDeleteEmptyBuffers()
+    let [i, n; empty] = [1, bufnr('$')]
+    while i <= n
+        if bufexists(i) && bufname(i) == ''
+            call add(empty, i)
+        endif
+        let i += 1
+    endwhile
+    if len(empty) > 0
+        exe 'bdelete' join(empty)
+    endif
+endfunction
 
-                           [e]  <empty buffer>
 
-                                                    גּ  Menu
+fun! ZettelSaveas(nombre)
+  let nameprev=expand('%')
+  let g:zettel_prevdir=getcwd()
+  let filedir=expand('%:h')
+  let nombre=split(a:nombre, ' ')
+  execute 'w ' . filedir . '/' . nombre[0]
+  execute 'bd ' . nameprev
+  execute '!rm ' . nameprev
+  execute 'e ' . filedir . '/' . nombre[0]
+  call ZettelDeleteEmptyBuffers()
+endf
 
-                           [fo]    Check reciently opened files
-                           [fm]    Show sessions
-                           [ww]    Open Wiki Index
-                           [fs]    File manager
-                           [fk]    Show keymaps
-                           [ft]    Change colorscheme
-
-                           [q]  <quit>
+command! -nargs=+ ZettelChangeName call ZettelSaveas(<q-args>)

@@ -1,0 +1,3 @@
+*Zettelvim*       Simple zettelkasten make vim a info package
+
+Welcome to Zettelvim! This is a package 
